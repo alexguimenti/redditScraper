@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const cheerio = require("cheerio");
 const request = require("request-promise");
+const RedditArticle = require("./RedditArticle");
 
 const url = "https://www.reddit.com/"; // url desejada
 
@@ -27,6 +28,10 @@ async function redditScrape() {
     titles.each((index, element) => {
       const title = $(element).text();
       console.log(title);
+      const redditArticle = new RedditArticle({
+        title: title
+      });
+      redditArticle.save();
     });
   } catch (err) {
     console.log(err);
@@ -35,7 +40,7 @@ async function redditScrape() {
 
 async function main() {
   await connectToMongoDb();
-  // await redditScrape();
+  await redditScrape();
 }
 
 main();
