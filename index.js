@@ -4,7 +4,20 @@ const request = require("request-promise");
 
 const url = "https://www.reddit.com/"; // url desejada
 
-async function main() {
+// user: redditdbuser
+// password: 6UpZChiR@J9S
+// db:
+// mongodb+srv://redditdbuser:6UpZChiR@J9S@cluster0-cbph7.mongodb.net/test?retryWrites=true
+
+async function connectToMongoDb() {
+  await mongoose.connect(
+    "mongodb+srv://redditdbuser:6UpZChiR@J9S@cluster0-cbph7.mongodb.net/test?retryWrites=true",
+    { useNewUrlParser: true }
+  );
+  console.log("Connect do Db!");
+}
+
+async function redditScrape() {
   try {
     const html = await request.get(url);
     const $ = await cheerio.load(html);
@@ -18,6 +31,11 @@ async function main() {
   } catch (err) {
     console.log(err);
   }
+}
+
+async function main() {
+  await connectToMongoDb();
+  // await redditScrape();
 }
 
 main();
